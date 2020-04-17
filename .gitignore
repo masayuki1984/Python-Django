@@ -1,2 +1,5 @@
 .idea
 *.pyc
+media
+accounts/tests.py
+backup

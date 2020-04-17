@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}日記詳細 | Private Diary{% endblock %}
+
+{% block active_diary_list %}active{% endblock %}
+
+
+{% block contents %}
+<div class="container">
+  <div class="my-div-style w-100">
+    <div class="row">
+      <div class="col-3">
+        <strong>タイトル</strong>
+      </div>
+      <div class="col-9">
+        {{ object.title }}
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="row">
+      <div class="col-3">
+        <strong>本文</strong>
+      </div>
+      <div class="col-9">
+        {{ object.content|linebreaksbr }}
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="row">
+      <div class="col-3">
+        <strong>写真</strong>
+      </div>
+      <div class="col-3">
+        {% if object.photo1 %}
+          <img src="{{ object.photo1.url }}" width="200" height="200"/>
+        {% endif %}
+      </div>
+      <div class="col-3">
+        {% if object.photo2 %}
+          <img src="{{ object.photo2.url }}" width="200" height="200"/>
+        {% endif %}
+      </div>
+      <div class="col-3">
+        {% if object.photo3 %}
+          <img src="{{ object.photo3.url }}" width="200" height="200"/>
+        {% endif %}
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="row">
+      <div class="col-3">
+        <strong>作成日時</strong>
+      </div>
+      <div class="col-9">
+        {{ object.created_at }}
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="row">
+      <div class="col-3">
+        <strong>更新日時</strong>
+      </div>
+    </div>
+    <a class="btn btn-success mt-5 mb-3" href="{% url 'diary:diary_update' object.pk %}">編集</a>
+    <a class="btn btn-danger mt-5 ml-2 mb-3" href="{% url 'diary:diary_delete' object.pk %}">削除</a>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}日記一覧 | Private Diary{% endblock %}
+
+{% block active_diary_list %}active{% endblock %}
+
+{% block head %}
+<link href="{% static 'css/clean-blog.min.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block contents %}
+<div class="container">
+  <div class="row">
+    <div class="my-div-style w-100">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <div class="clearfix">
+          <a class="btn btn-primary float-right" href="{% url 'diary:diary_create' %}">新規作成</a>
+        </div>
+        {% for diary in diary_list %}
+          <div class="post-preview">
+            <a href="{% url 'diary:diary_detail' diary.pk %}">
+              <h2 class="post-title">
+                {{ diary.title }}
+              </h2>
+              <h3 class="post-subtitle">
+                {{ diary.content|truncatechars:20 }}
+              </h3>
+            </a>
+            <p class="post-meta">{{ diary.created_at }}</p>
+          </div>
+          <hr>
+        {% empty %}
+          <p>日記がありません。</p>
+        {% endfor %}
+
+        <!-- ページネーション処理 -->
+
+        {% if is_paginated %}
+          <ul class="pagination">
+            <!-- 前ページへのリンク -->
+            {% if page_obj.has_previous %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+            {% endif %}
+
+            <!-- ページ数表示 -->
+            {% for page_num in page_obj.paginator.page_range %}
+              {% if page_obj.number == page_num %}
+                <li class="page-item active">
+                  <a class="page-link" href="#">{{ page_num }}</a>
+                </li>
+              {% else %}
+                <li class="page-item">
+                  <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+                </li>
+              {% endif %}
+            {% endfor %}
+
+            <!-- 次ページへのリンク -->
+            {% if page_obj.has_next %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+              </li>
+            {% endif %}
+          </ul>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
